@@ -41,10 +41,13 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
         public IActionResult Edit(int id)
         {
             //get the product by id
-            Student p = StudentDb.GetStudent(context, id);
-
+            Student s = StudentDb.GetStudent(context, id);
+            if(s == null)
+            {
+                return NotFound();
+            }
             //show it on web page
-            return View();
+            return View(s);
         }
 
         [HttpPost]
@@ -53,8 +56,8 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
             if (ModelState.IsValid)
             {
                 StudentDb.Update(context, p);
-                ViewData["Message"] = "Product Updated!";
-                return View(p);
+                TempData["Message"] = $"{p.Name} was updated successfully!";
+                return RedirectToAction("Index");
             }
             //return view with errors
             return View(p);

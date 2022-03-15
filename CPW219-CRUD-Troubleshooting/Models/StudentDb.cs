@@ -18,24 +18,21 @@
 
         public static Student GetStudent(SchoolContext context, int id)
         {
-            Student p2 = context
-                            .Students
-                            .Where(s => s.StudentId == id)
-                            .Single();
+            Student p2 = context.Students.Find(id);
             return p2;
         }
 
         public static void Delete(SchoolContext context, Student p)
         {
-            context.Students.Update(p);
+            //Mark the object as deleted
+            context.Students.Remove(p);
+            context.SaveChanges();
         }
 
         public static void Update(SchoolContext context, Student p)
         {
-            //Mark the object as deleted
-            context.Students.Remove(p);
-
             //Send delete query to database
+            context.Students.Update(p);
             context.SaveChanges();
         }
     }
