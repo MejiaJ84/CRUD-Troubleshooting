@@ -6,6 +6,14 @@
 
 <h1>Student Roster</h1>
 
+@if(TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+    </div>
+}
+
 <p>
     <a class="btn-primary btn-info" asp-action="Create" asp-controller="Students">Add Student</a>
 </p>
