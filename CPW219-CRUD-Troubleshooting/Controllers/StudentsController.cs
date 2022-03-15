@@ -38,6 +38,7 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
             return View(s);
         }
 
+        [HttpGet]
         public IActionResult Edit(int id)
         {
             //get the product by id
@@ -66,18 +67,36 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
         public IActionResult Delete(int id)
         {
             Student p = StudentDb.GetStudent(context, id);
+            if (p == null)
+            {
+                return NotFound();
+            }
             return View(p);
         }
 
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirm(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
             //Get Product from database
             Student p = StudentDb.GetStudent(context, id);
-
-            StudentDb.Delete(context, p);
-
+            if (p != null)
+            {
+                StudentDb.Delete(context, p);
+                TempData["Message"] = $"{p.Name} was deleted successfully!";
+                return RedirectToAction("Index");
+            }
+            TempData["Message"] = "This Student was already deleted or not in the database.";
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Details(int id)
+        {
+            Student s = StudentDb.GetStudent(context, id);
+            if (s == null)
+            {
+                return NotFound();
+            }
+            return View(s);
         }
     }
 }
